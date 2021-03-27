@@ -5,6 +5,7 @@ import com.hackaton.flags.flagsbackend.model.Outpost;
 import com.hackaton.flags.flagsbackend.service.BeachService;
 import com.hackaton.flags.flagsbackend.utility.AuthenticationRequest;
 import com.hackaton.flags.flagsbackend.utility.AuthenticationResponse;
+import com.hackaton.flags.flagsbackend.utility.FlagUpdateRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -101,7 +102,7 @@ public class BeachController {
 
 
     @PutMapping("update")
-    public ResponseEntity<Beach> updateOutpost (@RequestHeader(name = "Authorization") String authorized, @RequestBody Outpost outpost){
+    public ResponseEntity<Beach> updateOutpost (@RequestHeader(name = "Authorization") String authorized, @RequestBody FlagUpdateRequest outpost){
         //System.out.println(authorized);
         if (idStorage.containsKey(authorized)) {
 

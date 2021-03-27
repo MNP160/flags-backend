@@ -3,6 +3,7 @@ package com.hackaton.flags.flagsbackend.service;
 import com.hackaton.flags.flagsbackend.model.Beach;
 import com.hackaton.flags.flagsbackend.model.Outpost;
 import com.hackaton.flags.flagsbackend.repository.BeachRepository;
+import com.hackaton.flags.flagsbackend.utility.FlagUpdateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
@@ -38,8 +39,8 @@ public class BeachService {
         return beachRepository.insert(beach);
     }
 
-    public Beach updateOutpost(Outpost outpost, String email){
-       
+    public Beach updateOutpost(FlagUpdateRequest outpost, String email){
+
        List<Beach>beaches =  beachRepository.findAll();
        Beach updated= null;
       for (Beach beach : beaches){
@@ -51,8 +52,10 @@ public class BeachService {
       }
 
 
-      for(int i = 0; i<updated.getOutposts().size()-1; i++){
+      for(int i = 0; i<updated.getOutposts().size(); i++){
+
           if (outpost.getOutpost_id()==updated.getOutposts().get(i).getOutpost_id()){
+
               updated.getOutposts().get(i).setFlag(outpost.getFlag());
           }
       }
