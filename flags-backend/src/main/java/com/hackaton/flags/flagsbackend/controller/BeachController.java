@@ -34,16 +34,21 @@ public class BeachController {
     @GetMapping("beaches/{id}")
     public ResponseEntity<Beach> getBeach(@PathVariable String id){
 
-        if (beachService.getBeachId(id).isPresent()){
-            Beach beach = beachService.getBeachId(id).get();
-            System.out.println(beach.getEmail());
+        String email = idStorage.get(id);
+        List<Beach> beaches = beachService.getBeaches();
 
-            return ResponseEntity.ok(beach);
+        for (Beach beach : beaches){
+            if (beach.getEmail().equals(email)){
+                return ResponseEntity.ok(beach);
+            }
         }
-        else {
-            return ResponseEntity.badRequest().build();
-        }
+
+        return ResponseEntity.badRequest().build();
+
+
+
     }
+
 
 
     @GetMapping("beaches/count")
