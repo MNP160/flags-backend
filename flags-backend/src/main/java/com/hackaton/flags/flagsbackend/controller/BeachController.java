@@ -64,7 +64,7 @@ public class BeachController {
     }
 
     @GetMapping("outposts")
-    public ResponseEntity<List<Outpost>> GetOutpostsOnBeach(@RequestHeader(name = "authorization") String authorized){
+    public ResponseEntity<List<Outpost>> GetOutpostsOnBeach(@RequestHeader(name = "Authorization") String authorized){
         if (idStorage.containsKey(authorized)) {
             String email = idStorage.get(authorized);
             List<Beach> beaches = beachService.getBeaches();
@@ -101,14 +101,20 @@ public class BeachController {
 
 
     @PutMapping("update")
-    public ResponseEntity<Beach> updateOutpost (@RequestBody Outpost outpost){
-        Beach beach = beachService.updateOutpost(outpost);
-        if (beach!=null){
-            return ResponseEntity.ok(beach);
-        }
-        else {
+    public ResponseEntity<Beach> updateOutpost (@RequestHeader(name = "Authorization") String authorized, @RequestBody Outpost outpost){
+        //System.out.println(authorized);
+        if (idStorage.containsKey(authorized)) {
+
+            Beach beach = beachService.updateOutpost(outpost, idStorage.get(authorized));
+            if (beach != null) {
+                return ResponseEntity.ok(beach);
+            } else {
+                return ResponseEntity.badRequest().build();
+            }
+        }else {
             return ResponseEntity.badRequest().build();
         }
+
     }
 
 

@@ -38,19 +38,26 @@ public class BeachService {
         return beachRepository.insert(beach);
     }
 
-    public Beach updateOutpost(Outpost outpost){
+    public Beach updateOutpost(Outpost outpost, String email){
+       
        List<Beach>beaches =  beachRepository.findAll();
        Beach updated= null;
       for (Beach beach : beaches){
-          for (int i =0 ; i<beach.getOutposts().size()-1; i++){
-              if (beach.getOutposts().get(i).getOutpost_id()==outpost.getOutpost_id()){
-                  beach.getOutposts().get(i).setFlag(outpost.getFlag());
-                  updated = beach;
-              }
+
+          if (beach.getEmail().equals(email)){
+
+              updated = beach;
           }
       }
 
-      beachRepository.saveAll(beaches);
+
+      for(int i = 0; i<updated.getOutposts().size()-1; i++){
+          if (outpost.getOutpost_id()==updated.getOutposts().get(i).getOutpost_id()){
+              updated.getOutposts().get(i).setFlag(outpost.getFlag());
+          }
+      }
+
+      beachRepository.save(updated);
       return updated;
     }
 }
