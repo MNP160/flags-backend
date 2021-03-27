@@ -83,7 +83,7 @@ public class BeachController {
     }
 
     @PostMapping("login")
-    public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest request){
+    public ResponseEntity<AuthenticationResponse> login( @RequestBody AuthenticationRequest request){
         List<Beach> beaches= beachService.getBeaches();
 
         for (Beach beach : beaches) {
