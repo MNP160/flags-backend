@@ -69,6 +69,15 @@ public class BeachController {
 
     }
 
+    @GetMapping("outposts/{id}")
+    public ResponseEntity<Outpost> getOutpostById(@PathVariable int id){
+        Outpost found = beachService.getOutpostById(id);
+        if (found !=null){
+            return ResponseEntity.ok(found);
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
     @GetMapping("outposts")
     public ResponseEntity<List<Outpost>> GetOutpostsOnBeach(@RequestHeader(name = "Authorization") String authorized){
         if (idStorage.containsKey(authorized)) {

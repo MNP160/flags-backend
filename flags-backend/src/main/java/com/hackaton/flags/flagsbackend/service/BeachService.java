@@ -63,4 +63,18 @@ public class BeachService {
       beachRepository.save(updated);
       return updated;
     }
+
+    public Outpost getOutpostById(int id){
+        List<Beach> beaches = beachRepository.findAll();
+        Outpost found = null;
+        for(Beach beach  :beaches ){
+            for (int i =0; i<beach.getOutposts().size(); i++){
+                if (beach.getOutposts().get(i).getOutpost_id()==id){
+                    found = beach.getOutposts().get(i);
+                }
+            }
+        }
+
+        return found;
+    }
 }
