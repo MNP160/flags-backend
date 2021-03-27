@@ -4,6 +4,7 @@ import com.hackaton.flags.flagsbackend.model.Beach;
 import com.hackaton.flags.flagsbackend.model.Outpost;
 import com.hackaton.flags.flagsbackend.repository.BeachRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,10 +14,12 @@ import java.util.Optional;
 public class BeachService {
 
     private BeachRepository beachRepository;
+    private MongoTemplate mongoTemplate;
 
     @Autowired
-    public BeachService(BeachRepository beachRepository){
+    public BeachService(BeachRepository beachRepository, MongoTemplate mongoTemplate){
         this.beachRepository=beachRepository;
+        this.mongoTemplate=mongoTemplate;
     }
 
     public List<Beach> getBeaches(){
@@ -46,6 +49,7 @@ public class BeachService {
               }
           }
       }
+
       beachRepository.saveAll(beaches);
       return updated;
     }

@@ -4,12 +4,14 @@ import com.hackaton.flags.flagsbackend.model.Beach;
 import com.hackaton.flags.flagsbackend.model.Outpost;
 import com.hackaton.flags.flagsbackend.service.BeachService;
 import com.hackaton.flags.flagsbackend.utility.AuthenticationRequest;
+import com.hackaton.flags.flagsbackend.utility.AuthenticationResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
 @RestController
+@CrossOrigin()
 @RequestMapping("api/")
 public class BeachController {
 
@@ -81,14 +83,15 @@ public class BeachController {
     }
 
     @PostMapping("login")
-    public ResponseEntity<String> login(@RequestBody AuthenticationRequest request){
+    public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest request){
         List<Beach> beaches= beachService.getBeaches();
 
         for (Beach beach : beaches) {
            if (beach.getEmail().equals(request.getEmail()) && beach.getPassword().equals(request.getPassword())){
                String key = UUID.randomUUID().toString();
                idStorage.put(key, beach.getEmail());
-               return ResponseEntity.ok(key);
+
+               return ResponseEntity.ok(new AuthenticationResponse(key));
            }
         }
 
