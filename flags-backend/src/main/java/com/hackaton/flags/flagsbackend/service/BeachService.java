@@ -40,7 +40,7 @@ public class BeachService {
        Beach updated= null;
       for (Beach beach : beaches){
           for (int i =0 ; i<beach.getOutposts().size()-1; i++){
-              if (beach.getOutposts().get(i).getId()==outpost.getId()){
+              if (beach.getOutposts().get(i).getOutpost_id()==outpost.getOutpost_id()){
                   beach.getOutposts().get(i).setFlag(outpost.getFlag());
                   updated = beach;
               }

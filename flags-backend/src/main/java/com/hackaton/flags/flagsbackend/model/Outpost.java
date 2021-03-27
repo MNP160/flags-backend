@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Outpost {
-    private long id;
+    private int outpost_id;
     private String name;
     private String lat;
     private String lon;
