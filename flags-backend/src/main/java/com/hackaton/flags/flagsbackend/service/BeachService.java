@@ -70,7 +70,7 @@ public class BeachService {
 
     public Optional<Beach> InsertOutpostById(Beach beach, OutpostCreateRequest create){
         Update update = new Update();
-        Beach[] beaches = (Beach[]) beachRepository.findAll().toArray();
+        List<Beach> beaches =  beachRepository.findAll();
         int lastIndex=0;
         for (Beach value : beaches) {
             for (int j = 0; j < value.getOutposts().size(); j++) {
