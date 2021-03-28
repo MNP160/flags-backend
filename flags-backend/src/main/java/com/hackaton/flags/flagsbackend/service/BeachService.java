@@ -70,10 +70,18 @@ public class BeachService {
 
     public Optional<Beach> InsertOutpostById(Beach beach, OutpostCreateRequest create){
         Update update = new Update();
-        Object[] beaches = beachRepository.findAll().toArray();
-        Beach last = (Beach) beaches[beaches.length-1];
+        Beach[] beaches = (Beach[]) beachRepository.findAll().toArray();
+        int lastIndex=0;
+        for (Beach value : beaches) {
+            for (int j = 0; j < value.getOutposts().size(); j++) {
+                if (value.getOutposts().get(j).getOutpost_id() > lastIndex) {
+                    lastIndex = value.getOutposts().get(j).getOutpost_id();
+                }
+            }
+        }
+
         Outpost outpost = new Outpost();
-        outpost.setOutpost_id(last.getOutposts().get(last.getOutposts().size()-1).getOutpost_id()+1);
+        outpost.setOutpost_id(lastIndex+1);
         outpost.setFlag(create.getFlag());
         outpost.setLat(create.getLat());
         outpost.setLon(create.getLon());
