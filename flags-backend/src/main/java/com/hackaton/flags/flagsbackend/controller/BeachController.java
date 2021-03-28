@@ -6,6 +6,7 @@ import com.hackaton.flags.flagsbackend.service.BeachService;
 import com.hackaton.flags.flagsbackend.utility.AuthenticationRequest;
 import com.hackaton.flags.flagsbackend.utility.AuthenticationResponse;
 import com.hackaton.flags.flagsbackend.utility.FlagUpdateRequest;
+import com.hackaton.flags.flagsbackend.utility.OutpostCreateRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -110,6 +111,28 @@ public class BeachController {
            }
         }
 
+        return ResponseEntity.badRequest().build();
+
+    }
+
+    @PostMapping("outposts/create")
+    public ResponseEntity<Beach> createOutpost(@RequestHeader(name = "Authorization") String authorized, @RequestBody OutpostCreateRequest create){
+        if (idStorage.containsKey(authorized)) {
+           String email = idStorage.get(authorized);
+           List<Beach> beaches = beachService.getBeaches();
+           for(Beach beach : beaches){
+               if (beach.getEmail().equals(email)) {
+                   Optional<Beach> updated = beachService.InsertOutpostById(beach, create);
+                   if(updated.isPresent()) {
+                       return ResponseEntity.ok(updated.get());
+                   }
+               }
+           }
+
+
+
+            return ResponseEntity.badRequest().build();
+        }
         return ResponseEntity.badRequest().build();
 
     }

@@ -4,8 +4,12 @@ import com.hackaton.flags.flagsbackend.model.Beach;
 import com.hackaton.flags.flagsbackend.model.Outpost;
 import com.hackaton.flags.flagsbackend.repository.BeachRepository;
 import com.hackaton.flags.flagsbackend.utility.FlagUpdateRequest;
+import com.hackaton.flags.flagsbackend.utility.OutpostCreateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -62,6 +66,23 @@ public class BeachService {
 
       beachRepository.save(updated);
       return updated;
+    }
+
+    public Optional<Beach> InsertOutpostById(Beach beach, OutpostCreateRequest create){
+        Update update = new Update();
+        Object[] beaches = beachRepository.findAll().toArray();
+        Beach last = (Beach) beaches[beaches.length-1];
+        Outpost outpost = new Outpost();
+        outpost.setOutpost_id(last.getOutposts().get(last.getOutposts().size()-1).getOutpost_id()+1);
+        outpost.setFlag(create.getFlag());
+        outpost.setLat(create.getLat());
+        outpost.setLon(create.getLon());
+        outpost.setName(create.getName());
+        update.addToSet("outposts", outpost);
+        Criteria criteria = Criteria.where("_id").is(beach.getId());
+        mongoTemplate.updateFirst(Query.query(criteria),update, "beaches" );
+
+        return beachRepository.findById(beach.getId());
     }
 
     public Outpost getOutpostById(int id){
